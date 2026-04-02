@@ -27,6 +27,7 @@ let gameStarted = false;
 let timeLimit = null;
 let movesLimit = null;
 let currentDifficulty = 'easy';
+let unflipTimeout = null;
 
 function setDifficulty(level) {
     currentDifficulty = level;
@@ -106,7 +107,21 @@ function startTimer() {
 }
 
 function flipCard() {
-    if (isLocked) return;
+    // If two cards are currently showing and waiting to flip back...
+    if (isLocked && flippedCards.length === 2) {
+        // Do nothing if we click the exact same cards that are currently shown
+        if (this === flippedCards[0] || this === flippedCards[1]) return;
+        
+        // Fast play: immediately turn them back up so the user can keep clicking quickly
+        clearTimeout(unflipTimeout);
+        flippedCards[0].classList.remove('flipped');
+        flippedCards[1].classList.remove('flipped');
+        flippedCards = [];
+        isLocked = false;
+    } else if (isLocked) {
+        return; // Locked for menus, game over, etc
+    }
+
     if (this === flippedCards[0]) return;
 
     startTimer();
@@ -158,7 +173,7 @@ function disableCards() {
 
 function unflipCards() {
     isLocked = true;
-    setTimeout(() => {
+    unflipTimeout = setTimeout(() => {
         flippedCards[0].classList.remove('flipped');
         flippedCards[1].classList.remove('flipped');
         flippedCards = [];
