@@ -12,6 +12,7 @@ const mainPlayBtn = document.getElementById('main-play-btn');
 const btnEasy = document.getElementById('btn-easy');
 const btnMedium = document.getElementById('btn-medium');
 const btnHard = document.getElementById('btn-hard');
+const starsContainer = document.getElementById('stars-container');
 
 const emojis = ['🚀', '🛸', '🛰️', '🪐', '☄️', '🌌', '🌍', '👽'];
 
@@ -25,8 +26,10 @@ let isLocked = true;
 let gameStarted = false;
 let timeLimit = null;
 let movesLimit = null;
+let currentDifficulty = 'easy';
 
 function setDifficulty(level) {
+    currentDifficulty = level;
     if (level === 'easy') {
         timeLimit = null;
         movesLimit = null;
@@ -163,10 +166,52 @@ function unflipCards() {
     }, 1000);
 }
 
+function calculateStars() {
+    let stars = 1; // Default is 1 star if just finish
+    
+    if (currentDifficulty === 'easy') {
+        if (seconds <= 40 && moves <= 14) stars = 3;
+        else if (seconds <= 70 && moves <= 20) stars = 2;
+    } else if (currentDifficulty === 'medium') {
+        if (seconds <= 25 && moves <= 14) stars = 3;
+        else if (seconds <= 35 && moves <= 20) stars = 2;
+    } else if (currentDifficulty === 'hard') {
+        // hard modes requires lower moves
+        if (seconds <= 20 && moves <= 12) stars = 3;
+        else if (seconds <= 25 && moves <= 16) stars = 2;
+    }
+    
+    return stars;
+}
+
+function renderStars(earnedStars) {
+    starsContainer.innerHTML = '';
+    
+    for (let i = 1; i <= 3; i++) {
+        const star = document.createElement('span');
+        star.classList.add('star');
+        star.innerHTML = '★';
+        starsContainer.appendChild(star);
+        
+        setTimeout(() => {
+            star.classList.add('show');
+            if (i <= earnedStars) {
+                star.classList.add('earned');
+            }
+        }, i * 200);
+    }
+}
+
 function showVictory() {
     clearInterval(timer);
     resultTitle.textContent = 'Stellar Victory! 🚀';
-    resultMessage.textContent = `Completed in ${moves} moves and ${timeLimit ? formatTime(seconds) : timeEl.textContent}.`;
+    
+    let timeText = timeLimit ? formatTime(seconds) : timeEl.textContent;
+    resultMessage.textContent = `Completed in ${moves} moves and ${timeText}.`;
+    
+    const stars = calculateStars();
+    renderStars(stars);
+    
     resultModal.classList.remove('hidden');
 }
 
@@ -174,6 +219,7 @@ function showGameOver(reason) {
     clearInterval(timer);
     isLocked = true;
     resultTitle.textContent = 'Mission Failed! 💥';
+    starsContainer.innerHTML = '';
     if (reason === 'time') {
         resultMessage.textContent = 'You ran out of time!';
     } else {
