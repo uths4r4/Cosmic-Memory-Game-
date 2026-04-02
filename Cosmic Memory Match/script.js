@@ -1,3 +1,4 @@
+const gameContainer = document.querySelector('.game-container');
 const gameBoard = document.getElementById('game-board');
 const movesEl = document.getElementById('moves');
 const timeEl = document.getElementById('time');
@@ -60,6 +61,7 @@ function initGame() {
     timeEl.textContent = timeLimit ? formatTime(timeLimit) : '0:00';
     resultModal.classList.add('hidden');
     difficultyModal.classList.add('hidden');
+    gameContainer.classList.remove('hidden');
 
     const cardValues = [...emojis, ...emojis];
     cardValues.sort(() => Math.random() - 0.5);
@@ -251,6 +253,7 @@ function showDifficultyMenu() {
     resultModal.classList.add('hidden');
     landingModal.classList.add('hidden');
     difficultyModal.classList.remove('hidden');
+    gameContainer.classList.add('hidden');
     isLocked = true;
 }
 
@@ -262,6 +265,7 @@ function showLandingMenu() {
     resultModal.classList.add('hidden');
     difficultyModal.classList.add('hidden');
     landingModal.classList.remove('hidden');
+    gameContainer.classList.add('hidden');
     isLocked = true;
 }
 
