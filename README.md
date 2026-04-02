@@ -5,7 +5,7 @@ A fast, cosmic-themed **memory matching** game built with **HTML, CSS, and JavaS
 ## Play the Game
 - **Local:** download/clone the repo and open `index.html` in your browser.
 - **GitHub Pages (optional):** if you enable Pages, add the deployed link here:  
-  `https://<your-username>.github.io/Cosmic-Memory-Game-/`
+  `https://uths4r4.github.io/Cosmic-Memory-Game-/`
 
 ## Features
 - Cosmic UI theme
