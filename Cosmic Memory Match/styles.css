@@ -38,6 +38,41 @@ body {
     overflow: hidden;
 }
 
+.floating-emojis-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.floating-emoji {
+    position: absolute;
+    opacity: 0;
+    animation: floatUp 15s linear infinite;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(110vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-20vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
 .blob {
     position: absolute;
     border-radius: 50%;
@@ -159,6 +194,30 @@ h1 {
     transform: translateY(1px);
 }
 
+.btn-easy {
+    background: linear-gradient(45deg, #00f0ff, #0077ff);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+.btn-easy:hover {
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
+}
+
+.btn-medium {
+    background: linear-gradient(45deg, #7b2cbf, #ff007f);
+    box-shadow: 0 0 15px rgba(123, 44, 191, 0.4);
+}
+.btn-medium:hover {
+    box-shadow: 0 0 25px rgba(123, 44, 191, 0.7);
+}
+
+.btn-hard {
+    background: linear-gradient(45deg, #ff007f, #ff4c00);
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+}
+.btn-hard:hover {
+    box-shadow: 0 0 25px rgba(255, 0, 127, 0.7);
+}
+
 /* Grid layout */
 .game-board {
     display: grid;
@@ -246,14 +305,18 @@ h1 {
 }
 
 .modal-content {
-    background: rgba(20, 20, 30, 0.9);
-    border: 1px solid var(--accent-2);
-    box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
-    padding: 50px;
-    border-radius: 24px;
+    background: rgba(15, 15, 25, 0.65);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 240, 255, 0.15);
+    padding: 60px 50px;
+    border-radius: 30px;
     text-align: center;
     transform: scale(1);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%;
+    width: 450px;
 }
 
 .modal.hidden .modal-content {
@@ -303,9 +366,9 @@ h1 {
 .difficulty-btn-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 @media (max-width: 600px) {

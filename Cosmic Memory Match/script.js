@@ -258,3 +258,44 @@ restartBtn.addEventListener('click', showLandingMenu);
 playAgainBtn.addEventListener('click', showDifficultyMenu);
 
 isLocked = true;
+
+// Add falling/floating emojis for the dynamic background
+function createFloatingEmojis() {
+    const container = document.getElementById('floating-emojis');
+    if (!container) return;
+    
+    // Expand the emoji list slightly for more variety
+    const emojiList = [...emojis, '⭐', '🌟', '✨', '🌍'];
+    
+    // Create ~25 floating emojis
+    for (let i = 0; i < 25; i++) {
+        const emoji = document.createElement('div');
+        emoji.classList.add('floating-emoji');
+        emoji.innerText = emojiList[Math.floor(Math.random() * emojiList.length)];
+        
+        // Randomize positions, animation duration, delay and size
+        const left = Math.random() * 100;
+        const duration = 15 + Math.random() * 25; // 15s to 40s
+        const delay = Math.random() * -30; // Start at different times so screen isn't empty initially
+        const size = 1.5 + Math.random() * 2.5; // 1.5rem to 4rem
+        
+        emoji.style.left = `${left}vw`;
+        emoji.style.animationDuration = `${duration}s`;
+        emoji.style.animationDelay = `${delay}s`;
+        emoji.style.fontSize = `${size}rem`;
+        
+        // Add a parallax-like effect based on size (smaller goes slower and is more blurred)
+        if (size < 2.5) {
+            emoji.style.filter = 'blur(2px) drop-shadow(0 0 5px rgba(255,255,255,0.1))';
+            emoji.style.zIndex = -1;
+        } else {
+            emoji.style.filter = 'drop-shadow(0 0 10px rgba(255,255,255,0.3))';
+            emoji.style.zIndex = 1;
+        }
+        
+        container.appendChild(emoji);
+    }
+}
+
+// Call on load
+createFloatingEmojis();
